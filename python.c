@@ -55,13 +55,13 @@ void insert(list* list, char* str) {
     int i = 0;
     int str1=0, flt=0;
     char ch;
-    while(ch=str[i]!='\0') {
+    while((ch=str[i])!='\0') {
         //0-9
-        if(!(ch>47 && ch<58) && ch!=45){
+        if(!(ch>47 && ch<58) && ch!=45 && ch!=46){
             str1 = 1;
         }
         //decimal point
-        if(!flt && ch==46 && ch!=45){
+        if(!flt && ch==46){
             flt = 1;
         }
         i++;
@@ -93,14 +93,14 @@ void insert(list* list, char* str) {
         }
 
         int l = 0;
-        int sumL = 0;
+        long int sumL = 0;
         if(isLong){
             while(str[l]!='\0'){
                 sumL*=10;
                 sumL += str[l]-'0';
                 l++;
             }
-            node->vLong = sumL;
+            node->vLong = sumL*sign;
             node->type = tLong;
         }
         else{
@@ -119,7 +119,7 @@ void insert(list* list, char* str) {
         }
         node->type = tFloat;
 
-        int sum = 0;
+        float sum = 0;
         int j = 0;
         bool isDub = false;
         while(str[j]!='\0'){
@@ -137,8 +137,8 @@ void insert(list* list, char* str) {
             
         }
         if(!isDub){
-            int mantissa = 0;
-            int mult = 10;
+            float mantissa = 0;
+            float mult = 10;
             if(str[j]=='.'){
                 while(str[j]!='\0'){
                     mantissa = str[j]-'0';
@@ -151,32 +151,32 @@ void insert(list* list, char* str) {
         }
         //then add the parts after the decimal point
         int l = 0;
-        int sumL = 0;
+        double sumL = 0;
         if(isDub){
             while(str[l]!='\0'){
-                if(str[j]=='.') break;
+                if(str[l]=='.') break;
                 sumL*=10;
                 sumL += str[l]-'0';
                 l++;
             }
 
-            int mantissa = 0;
-            int mult = 10;
-            if(str[j]=='.'){
-                while(str[j]!='\0'){
-                    mantissa = str[j]-'0';
+            double mantissa = 0;
+            double mult = 10;
+            if(str[l]=='.'){
+                while(str[l]!='\0'){
+                    mantissa = str[l]-'0';
                     mantissa /= mult;
                     sumL+=mantissa;
-                    j++;
+                    l++;
                     mult*= 10;
                 }
             }
 
-            node->vDouble = sumL;
+            node->vDouble = sumL*sign;
             node->type = tDouble;
         }
         else{
-            node->vInt = sum*sign;
+            node->vFloat = sum*sign;
         }
     }
     else{
@@ -208,7 +208,7 @@ void insertList(list* list){
     printf("enter something already\n");
     while(add){
         char str[1000]; 
-        fscanf(stdin,"%s",str);
+        scanf("%s",str);
         insert(list,str);
 
         printf("keep adding?\n");
@@ -225,19 +225,19 @@ void display(list*list){
                 else printf("false\n");
                 break;
             case tChar:
-                printf("%s\n",node->vChar);
+                printf("%s char\n",node->vChar);
                 break;
             case tDouble:
-                printf("%lf\n",node->vDouble);
+                printf("%lf double\n",node->vDouble);
                 break;
             case tFloat:
-                printf("%f\n",node->vFloat);
+                printf("%f float\n",node->vFloat);
                 break;
             case tInt:
-                printf("%d\n",node->vInt);
+                printf("%d int\n",node->vInt);
                 break;
             case tLong:
-                printf("%ld\n",node->vLong);
+                printf("%ld long\n",node->vLong);
                 break;
         }
         node = node->next;
