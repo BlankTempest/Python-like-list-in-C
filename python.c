@@ -67,21 +67,6 @@ void insert(list* list, char* str) {
         i++;
     }
 
-    if(i==4){
-        if(str[0] == 't' && str[1]=='r' && str[2]=='u' && str[3]=='e') {
-            node->type = tBool;
-            node->vBool = true;
-            return;
-        }
-    }
-    else if(i==5){
-        if(str[0] == 'f' && str[1]=='a' && str[2]=='l' && str[3]=='s' && str[4]=='e') {
-            node->type = tBool;
-            node->vBool = false;
-            return;    
-        }
-    }
-
     if(!str1 && !flt){
         int sign;
         if(str[0]=='-'){
@@ -95,7 +80,7 @@ void insert(list* list, char* str) {
 
         int sum = 0;
         int j = 0;
-        bool isLong = true;
+        bool isLong = false;
         while(str[j]!='\0'){
             //if num at any time is less than -1, then it has overflown.
             sum*=10;
@@ -136,7 +121,7 @@ void insert(list* list, char* str) {
 
         int sum = 0;
         int j = 0;
-        bool isDub = true;
+        bool isDub = false;
         while(str[j]!='\0'){
             if(str[j]=='.'){
                 break;
@@ -195,6 +180,20 @@ void insert(list* list, char* str) {
         }
     }
     else{
+        if(i==4){
+            if(str[0] == 't' && str[1]=='r' && str[2]=='u' && str[3]=='e') {
+                node->type = tBool;
+                node->vBool = true;
+                return;
+            }
+        }
+        else if(i==5){
+            if(str[0] == 'f' && str[1]=='a' && str[2]=='l' && str[3]=='s' && str[4]=='e') {
+                node->type = tBool;
+                node->vBool = false;
+                return;    
+            }
+        }
 
         node->type = tChar;
         char* str2 = (char*)malloc(sizeof(char)*1000);
